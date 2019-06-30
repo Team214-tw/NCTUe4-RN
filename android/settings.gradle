@@ -1,0 +1,3 @@
+rootProject.name = 'NCTUe4'
+
+include ':app'
