@@ -1,8 +1,23 @@
 import React, {Component} from 'react'
 import { View, Text, Button, StyleSheet, ScrollView } from 'react-native'
+import * as Keychain from 'react-native-keychain'
+import { goSignIn } from '../navigation';
+import SplashScreen from 'react-native-splash-screen';
 
 interface Props {}
-export default class App extends Component<Props> {
+export default class Ann extends Component<Props> {
+  async componentDidMount() {
+    const credentials = await Keychain.getGenericPassword()
+    const username = credentials && credentials.username;
+    const password = credentials && credentials.password;
+    if (!username || !password) {
+      goSignIn();
+    }
+    else {
+      SplashScreen.hide()
+    }
+  }
+  
   render() {
     return (
       <View style={styles.container}>
