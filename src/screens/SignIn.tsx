@@ -12,12 +12,10 @@ import {
   Platform,
 } from 'react-native'
 import * as Keychain from 'react-native-keychain'
-//@ts-ignore
 import Button from 'apsl-react-native-button'
-//@ts-ignore
 import Spinner from 'react-native-spinkit'
-import SplashScreen from 'react-native-splash-screen'
 import { goAnn } from '../navigation';
+import NewE3ApiClient from '../client/NewE3ApiClient'
 
 interface Props { }
 interface States {
@@ -29,9 +27,6 @@ interface States {
 }
 
 export default class SignIn extends Component<Props, States> {
-  async componentDidMount() {
-    SplashScreen.hide()
-  }
 
   constructor(props: Props) {
     super(props)
@@ -49,16 +44,20 @@ export default class SignIn extends Component<Props, States> {
   }
 
   signIn = async () => {
-    Keyboard.dismiss()
-    this.setState({ failed: false, showSpinner: true })
+    Keyboard.dismiss() // hide keyboard
+    this.setState({ failed: false, showSpinner: true }) // show spinner
+
+    let client = new NewE3ApiClient
     const { username, password } = this.state
-    if (username && password) {
-      await Keychain.setGenericPassword(username, password)
-      goAnn()
-    }
-    else {
-      this.setState({ failed: true, failedMsg: 'Empty input', showSpinner: false })
-    }
+
+    await client.login(username, password)
+      .then(() => {
+        Keychain.setGenericPassword(username, password)
+        goAnn()
+      })
+      .catch(err => {
+        this.setState({ failed: true, failedMsg: err.message, showSpinner: false })
+      })
   }
 
   render() {
@@ -151,8 +150,8 @@ const styles = StyleSheet.create({
   },
   // input container
   inputContainer: {
-    paddingTop: 50,
-    paddingBottom: 40,
+    paddingTop: 60,
+    paddingBottom: 30,
     paddingHorizontal: 50,
   },
   keychain: {

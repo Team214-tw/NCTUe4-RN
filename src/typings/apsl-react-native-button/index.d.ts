@@ -1,0 +1,1 @@
+declare module 'apsl-react-native-button';

@@ -8,6 +8,7 @@ export function registerScreens() {
   let SignInScreen = require('./screens/SignIn').default
   let SettingsScreen = require('./screens/Settings').default
   let DevelopingScreen = require('./screens/Developing').default
+  let InitScreen = require('./screens/Init').default
   // Regist all screens
   Navigation.registerComponent('Ann', () => AnnScreen)
   Navigation.registerComponent('Course', () => CourseScreen)
@@ -16,4 +17,5 @@ export function registerScreens() {
   Navigation.registerComponent('Settings', () => SettingsScreen)
   Navigation.registerComponent('SignIn', () => SignInScreen)
   Navigation.registerComponent('Developing', () => DevelopingScreen)
+  Navigation.registerComponent('Init', () => InitScreen)
 }

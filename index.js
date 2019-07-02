@@ -9,5 +9,12 @@ import { goAnn } from "./src/navigation";
 registerScreens();
 
 Navigation.events().registerAppLaunchedListener(() => {
-  goAnn();
+  Navigation.setRoot({
+    root: {
+      component: {
+        id: 'Init',
+        name: 'Init',
+      },
+    },
+  })
 });
