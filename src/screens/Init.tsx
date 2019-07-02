@@ -3,6 +3,7 @@ import { View, Text, StyleSheet } from 'react-native'
 import * as Keychain from 'react-native-keychain'
 import { goSignIn, goAnn } from '../navigation';
 import SplashScreen from 'react-native-splash-screen';
+import NewE3ApiClient from '../client/NewE3ApiClient';
 
 interface Props { }
 
@@ -12,10 +13,15 @@ export default class Timetable extends Component<Props> {
     const username = credentials && credentials.username;
     const password = credentials && credentials.password;
     if (!username || !password) {
-      goSignIn();
+      goSignIn()
     }
     else {
-      goAnn();
+      let client = new NewE3ApiClient
+      await client.login(username, password).catch(err => {
+        console.log(err)
+        goSignIn()
+      })
+      goAnn()
     }
     SplashScreen.hide()
   }

@@ -3,6 +3,9 @@ package com.nctue4;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
+import com.avishayil.rnrestart.ReactNativeRestartPackage;
+import com.masteratul.exceptionhandler.ReactNativeExceptionHandlerPackage;
+import com.reactnativecommunity.asyncstorage.AsyncStoragePackage;
 import org.devio.rn.splashscreen.SplashScreenReactPackage;
 import com.react.rnspinkit.RNSpinkitPackage;
 import com.oblador.keychain.KeychainPackage;
@@ -42,7 +45,10 @@ public class MainApplication extends NavigationApplication {
       return Arrays.<ReactPackage>asList(
           new KeychainPackage(),
           new RNSpinkitPackage(),
-          new SplashScreenReactPackage()
+          new SplashScreenReactPackage(),
+          new AsyncStoragePackage(),
+          new ReactNativeExceptionHandlerPackage(),
+          new ReactNativeRestartPackage()
           // eg. new VectorIconsPackage()
       );
   }

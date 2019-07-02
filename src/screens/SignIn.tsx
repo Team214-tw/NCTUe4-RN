@@ -49,25 +49,23 @@ export default class SignIn extends Component<Props, States> {
 
     let client = new NewE3ApiClient
     const { username, password } = this.state
-
     await client.login(username, password)
       .then(() => {
-        Keychain.setGenericPassword(username, password)
         goAnn()
       })
       .catch(err => {
         this.setState({ failed: true, failedMsg: err.message, showSpinner: false })
       })
   }
+  
+  renderSpinnerOrText = () => {
+    if (this.state.showSpinner) {
+      return <Spinner size={100} type="Pulse" color="#FFFFFF" />
+    }
+    return this.state.failed ? this.state.failedMsg : 'LOGIN'
+  }
 
   render() {
-    const renderSpinnerOrText = () => {
-      if (this.state.showSpinner) {
-        return <Spinner size={100} type="Pulse" color="#FFFFFF" />
-      }
-      return this.state.failed ? this.state.failedMsg : 'LOGIN'
-    }
-
     return (
       // Android may behave better when given no behavior prop at all, whereas iOS is the opposite.
       <KeyboardAvoidingView style={styles.container} behavior={Platform.OS === 'ios' ? 'padding' : undefined}>
@@ -110,7 +108,7 @@ export default class SignIn extends Component<Props, States> {
               onPress={this.signIn}
               isDisabled={this.state.showSpinner ? true : false}
             >
-              {renderSpinnerOrText()}
+              {this.renderSpinnerOrText()}
             </Button>
             
           </View>
