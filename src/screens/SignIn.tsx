@@ -80,6 +80,9 @@ export default class SignIn extends Component<Props, States> {
             <Text style={styles.logoSubTitle}>\ Make New E3 great again /</Text>
           </View>
 
+          {/* fill the middle of screen */}
+          <View style={{ flex: 1 }} />
+
           <View style={styles.inputContainer}>
 
             <Text style={styles.keychain}>Username</Text>
@@ -98,7 +101,7 @@ export default class SignIn extends Component<Props, States> {
               onChangeText={password => this.setState({ password: password })}
             />
 
-            <TouchableOpacity onPress={this.forgotPass}>
+            <TouchableOpacity onPress={this.forgotPass} style={styles.forgotPassContainer}>
               <Text style={styles.forgotPass}>Forgot password?</Text>
             </TouchableOpacity>
 
@@ -149,8 +152,8 @@ const styles = StyleSheet.create({
   },
   // input container
   inputContainer: {
-    paddingTop: 75,
-    paddingBottom: 25,
+    paddingTop: 50,
+    paddingBottom: 30,
     paddingHorizontal: 50,
   },
   keychain: {
@@ -159,13 +162,15 @@ const styles = StyleSheet.create({
     fontWeight: '600',
     fontFamily: 'ArialRoundedMTBold',
   },
+  forgotPassContainer: {
+    marginBottom: 22,
+  },
   forgotPass: {
     fontSize: 16,
     color: '#999999',
     fontWeight: '400',
     fontFamily: 'ArialRoundedMTBold',
     textAlign: 'right',
-    marginBottom: 22,
   },
   textInput: {
     height: 45,
