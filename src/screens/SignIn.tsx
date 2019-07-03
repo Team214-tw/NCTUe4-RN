@@ -112,6 +112,7 @@ export default class SignIn extends Component<Props, States> {
             </Button>
             
           </View>
+
           {/* fill the rest of screen */}
           <View style={{ flex: 1 }} />
         </View>
@@ -148,8 +149,8 @@ const styles = StyleSheet.create({
   },
   // input container
   inputContainer: {
-    paddingTop: 60,
-    paddingBottom: 30,
+    paddingTop: 75,
+    paddingBottom: 25,
     paddingHorizontal: 50,
   },
   keychain: {
@@ -159,18 +160,18 @@ const styles = StyleSheet.create({
     fontFamily: 'ArialRoundedMTBold',
   },
   forgotPass: {
-    fontSize: 18,
+    fontSize: 16,
     color: '#999999',
     fontWeight: '400',
     fontFamily: 'ArialRoundedMTBold',
     textAlign: 'right',
-    marginBottom: 20,
+    marginBottom: 22,
   },
   textInput: {
     height: 45,
     fontSize: 20,
     fontWeight: '400',
-    marginBottom: 20,
+    marginBottom: 22,
     borderBottomWidth: 1,
     borderColor: '#CCCCCC',
   },
