@@ -1,12 +1,104 @@
-import React, {Component} from 'react'
-import { View, Text, Button, StyleSheet, ScrollView } from 'react-native'
+import React, { Component } from 'react'
+import {
+  View,
+  Text,
+  StyleSheet,
+  ScrollView,
+  SectionList,
+  RefreshControl,
+  Alert
+} from 'react-native'
+import AsyncStorage from '@react-native-community/async-storage';
+import { Button, ListItem, Badge, Divider } from 'react-native-elements'
+import NewE3ApiClient from '../client/NewE3ApiClient';
 
-interface Props {}
-export default class Course extends Component<Props> {
+interface Props { }
+interface States {
+  refreshing: boolean,
+  courseList: any
+}
+
+export default class Course extends Component<Props, States> {
+  
+  constructor(props: Props) {
+    super(props)
+    this.state = {
+      refreshing: false,
+      courseList: [],
+    }
+  }
+
+  async updateState() {
+    let courseInfo = await AsyncStorage.getItem('courseInfo')
+    if (!courseInfo) { return }
+    let courseList = JSON.parse(courseInfo)
+
+    var renderList: Array<{ semester: string, data: course_type }> = []
+    Object.keys(courseList).forEach(sems => {
+      renderList.push({ semester: String(sems), data: courseList[sems] })
+    })
+    renderList.reverse() // let latest semester on top of list
+
+    this.setState({ courseList: renderList })
+  }
+
+  async componentDidMount() {
+    await this.updateState()
+  }
+
+  goCourse = () => {
+    Alert.alert('Go course')
+  }
+
+  _onRefresh = async () => {
+    this.setState({ refreshing: true })
+    let client = new NewE3ApiClient
+    client.updateCourseList().catch(err => { Alert.alert('Refresh failed', err.message) })
+    await this.updateState()
+    this.setState({ refreshing: false })
+  }
+
+  _renderSectionHeader: any = ({ section: { semester } }: any) => (
+    <View style={styles.sectionHeaders} >
+      <Text style={styles.sectionHeadersTitle}>{semester}</Text>
+    </View>
+  )
+
+  _renderItem = ({ item, index }: any) => (
+    <ListItem
+      title={
+        <View>
+          <Text numberOfLines={1} style={styles.cname} key={'cname' + index}>
+            {item.cname}
+          </Text>
+          <Text numberOfLines={1} style={styles.ename} key={'ename' + index}>
+            {item.ename}
+          </Text>
+        </View>
+      }
+      onPress={this.goCourse}
+      topDivider={true}
+      containerStyle={styles.courseListItem}
+    />
+  )
+
   render() {
     return (
       <View style={styles.container}>
-        <Text style={styles.welcome}>Course</Text>
+        <SectionList
+          style={styles.inner}
+          refreshControl={
+            <RefreshControl
+              refreshing={this.state.refreshing}
+              onRefresh={this._onRefresh}
+            />
+          }
+          renderSectionHeader={this._renderSectionHeader}
+          renderItem={this._renderItem}
+          stickySectionHeadersEnabled={false}
+          sections={this.state.courseList}
+          keyExtractor={(item, index) => item + index}
+        />
       </View>
     );
   }
@@ -15,18 +107,34 @@ export default class Course extends Component<Props> {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
+  },
+  inner: {
+    flex: 1,
+  },
+  sectionHeaders: {
+    flex: 1,
+    flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: '#F5FCFF',
+    justifyContent: 'space-between',
+    paddingTop: 14,
+    paddingLeft: 18,
+    paddingBottom: 10,
+    paddingRight: 16,
   },
-  welcome: {
-    fontSize: 20,
-    textAlign: 'center',
-    margin: 10,
+  sectionHeadersTitle: {
+    fontSize: 16,
+    fontWeight: 'bold',
   },
-  instructions: {
-    textAlign: 'center',
-    color: '#333333',
-    marginBottom: 5,
+  cname: {
+    fontSize: 16,
+    marginBottom: 2,
+  },
+  ename: {
+    fontSize: 14,
+  },
+  courseListItem: {
+    paddingHorizontal: 16,
+    paddingTop: 14,
+    paddingBottom: 14,
   },
 });

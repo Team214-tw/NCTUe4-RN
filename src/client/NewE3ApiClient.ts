@@ -41,7 +41,53 @@ export default class NewE3ApiClient {
                 await AsyncStorage.setItem('newE3UserId', JSON.stringify(result[0].id))
                 await AsyncStorage.setItem('studentEmail', JSON.stringify(result[0].email))
                 await AsyncStorage.setItem('studentName', JSON.stringify(result[0].fullname))
-          }).catch(err => {
+          })
+          .catch(err => {
+                throw err
+          })
+    }
+
+    private async saveCourseInfo() {
+        let newE3UserId = await AsyncStorage.getItem('newE3UserId')
+        if (!newE3UserId) throw new Error("New E3 User ID not exists")
+        newE3UserId = JSON.parse(newE3UserId)
+
+        let formData = new FormData();
+        formData.append("wsfunction", "core_enrol_get_users_courses")
+        formData.append("userid", newE3UserId)
+        
+        await this.post(formData)
+          .then(async result => {
+                var parseInfo:course_list = {}
+                for (let course of result) {
+                    let courseCName:string, courseEName:string, courseCode:number, courseSemester: number
+                    let courseFullname = course.fullname.split(".")
+                    let courseInfo = course.shortname.split(".")
+
+                    if (courseFullname.length >= 3) {
+                        courseCName = courseFullname[2].split(/ (.+)/)[0]
+                        courseEName = courseFullname[2].split(/ (.+)/)[1]
+                    }
+                    else {
+                        courseCName = courseFullname[0]
+                        courseEName = courseFullname[0]
+                    }
+                    courseCode = Number(courseInfo[1])
+                    courseSemester = courseInfo[0]
+                    
+                    if (parseInfo[courseSemester] == undefined) parseInfo[courseSemester] = []
+                    parseInfo[courseSemester].push({
+                        cname     : courseCName,
+                        ename     : courseEName,
+                        code      : courseCode, // defined by school
+                        id        : course.id, // used in New E3
+                        startdate : course.startdate,
+                        enddate   : course.enddate,
+                    })
+                }
+                await AsyncStorage.setItem('courseInfo', JSON.stringify(parseInfo))
+          })
+          .catch(err => {
                 throw err
           })
     }
@@ -72,15 +118,21 @@ export default class NewE3ApiClient {
                     await KeyChain.setGenericPassword(userId, password)
                     await KeyChain.setInternetCredentials("NewE3", userId, responseJson.token)
                     await this.saveUserInfo(userId).catch(err => { throw err })
+                    await this.saveCourseInfo().catch(err => { throw err })
                 }
                 else {
                     clean_datas()
                     throw new Error("Login failed")
                 }
-          }).catch(err => {
+          })
+          .catch(err => {
                 clean_datas()
                 throw err
           })
+    }
+
+    async updateCourseList() {
+        return this.saveCourseInfo().catch(err => { throw err })
     }
 }
 

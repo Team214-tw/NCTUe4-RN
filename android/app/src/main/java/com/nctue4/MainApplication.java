@@ -3,6 +3,7 @@ package com.nctue4;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
+import com.oblador.vectoricons.VectorIconsPackage;
 import com.avishayil.rnrestart.ReactNativeRestartPackage;
 import com.masteratul.exceptionhandler.ReactNativeExceptionHandlerPackage;
 import com.reactnativecommunity.asyncstorage.AsyncStoragePackage;
@@ -48,7 +49,8 @@ public class MainApplication extends NavigationApplication {
           new SplashScreenReactPackage(),
           new AsyncStoragePackage(),
           new ReactNativeExceptionHandlerPackage(),
-          new ReactNativeRestartPackage()
+          new ReactNativeRestartPackage(),
+          new VectorIconsPackage()
           // eg. new VectorIconsPackage()
       );
   }
