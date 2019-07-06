@@ -10,11 +10,15 @@ export default class NewE3ApiClient {
      * Post form to API_URL
      * Throw error if [token not exist / KeyChain error / fetch error]
      */
-    private async post(form: FormData) {
+    private async post(form: { [field: string]: string}) {
+        let formData = new FormData()
+        Object.keys(form).forEach(field => {
+            formData.append(field, form[field])
+        })
         // get token
         await KeyChain.getInternetCredentials("NewE3")
           .then(result => {
-                if (result) form.append("wstoken", result.password)
+                if (result) formData.append("wstoken", result.password)
                 else throw new Error("Token not exist")
           })
           .catch(err => {
@@ -24,7 +28,7 @@ export default class NewE3ApiClient {
         return fetch(NewE3ApiClient.API_URL, {
             method: 'POST',
             headers: {},
-            body: form,
+            body: formData,
           })
           .then(response => response.json())
           .then(responseJson => { return responseJson })
@@ -32,10 +36,11 @@ export default class NewE3ApiClient {
     }
 
     private async saveUserInfo(studentId: string) {
-        let formData = new FormData();
-        formData.append("wsfunction", "core_user_get_users_by_field")
-        formData.append("values[0]", studentId)
-        formData.append("field", "username")
+        let formData = {
+            "wsfunction": "core_user_get_users_by_field",
+            "values[0]": studentId,
+            "field": "username",
+        }
         await this.post(formData)
           .then(async result => {
                 await AsyncStorage.setItem('newE3UserId', JSON.stringify(result[0].id))
@@ -48,17 +53,18 @@ export default class NewE3ApiClient {
     }
 
     private async saveCourseInfo() {
-        let newE3UserId = await AsyncStorage.getItem('newE3UserId')
-        if (!newE3UserId) throw new Error("New E3 User ID not exists")
-        newE3UserId = JSON.parse(newE3UserId)
+        let exist = await AsyncStorage.getItem('newE3UserId')
+        if (!exist) { throw new Error("New E3 User ID not exists") }
+        let newE3UserId = JSON.parse(exist)
 
-        let formData = new FormData();
-        formData.append("wsfunction", "core_enrol_get_users_courses")
-        formData.append("userid", newE3UserId)
-        
+        let formData = {
+            "wsfunction": "core_enrol_get_users_courses",
+            "userid": newE3UserId,
+        }
+
         await this.post(formData)
           .then(async result => {
-                var parseInfo:course_list = {}
+                var parseList:course_list = {}
                 for (let course of result) {
                     let courseCName:string, courseEName:string, courseCode:number, courseSemester: number
                     let courseFullname = course.fullname.split(".")
@@ -75,17 +81,34 @@ export default class NewE3ApiClient {
                     courseCode = Number(courseInfo[1])
                     courseSemester = courseInfo[0]
                     
-                    if (parseInfo[courseSemester] == undefined) parseInfo[courseSemester] = []
-                    parseInfo[courseSemester].push({
+                    if (parseList[courseSemester] == undefined) parseList[courseSemester] = []
+                    let parseCourse: course_type = {
                         cname     : courseCName,
                         ename     : courseEName,
                         code      : courseCode, // defined by school
                         id        : course.id, // used in New E3
                         startdate : course.startdate,
                         enddate   : course.enddate,
-                    })
+                    }
+                    parseList[courseSemester].push(parseCourse)
+                    this.saveCourseAnn(parseCourse)
                 }
-                await AsyncStorage.setItem('courseInfo', JSON.stringify(parseInfo))
+                await AsyncStorage.setItem('courseInfo', JSON.stringify(parseList))
+          })
+          .catch(err => {
+                throw err
+          })
+    }
+
+    private async saveCourseAnn(course: course_type) {
+        let formData = {
+            "wsfunction": "mod_forum_get_forums_by_courses",
+            "courseids[0]": String(course.id),
+        }
+
+        await this.post(formData)
+          .then(result => {
+                console.log(result)
           })
           .catch(err => {
                 throw err
