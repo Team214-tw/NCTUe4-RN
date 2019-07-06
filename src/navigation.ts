@@ -17,7 +17,7 @@ export const goAnn = () =>
         children: [
           {
             stack: {
-              id: 'Ann',
+              id: 'HomeAnn',
               options: {
                 bottomTab: {
                   text: 'Announcement',
@@ -36,7 +36,7 @@ export const goAnn = () =>
               children: [
                 {
                   component: {
-                    name: 'Ann',
+                    name: 'HomeAnn',
                   },
                 },
               ],
@@ -44,7 +44,7 @@ export const goAnn = () =>
           },
           {
             stack: {
-              id: 'Course',
+              id: 'HomeCourse',
               options: {
                 bottomTab: {
                   text: 'Course',
@@ -63,7 +63,7 @@ export const goAnn = () =>
               children: [
                 {
                   component: {
-                    name: 'Course',
+                    name: 'HomeCourse',
                   },
                 },
               ],
@@ -71,7 +71,7 @@ export const goAnn = () =>
           },
           {
             stack: {
-              id: 'Timetable',
+              id: 'HomeTimetable',
               options: {
                 bottomTab: {
                   text: 'Timetable',
@@ -90,7 +90,7 @@ export const goAnn = () =>
               children: [
                 {
                   component: {
-                    name: 'Timetable',
+                    name: 'HomeTimetable',
                   },
                 },
               ],
@@ -98,7 +98,7 @@ export const goAnn = () =>
           },
           {
             stack: {
-              id: 'Files',
+              id: 'HomeFiles',
               options: {
                 bottomTab: {
                   text: 'Files',
@@ -117,7 +117,7 @@ export const goAnn = () =>
               children: [
                 {
                   component: {
-                    name: 'Files',
+                    name: 'HomeFiles',
                   },
                 },
               ],
@@ -125,7 +125,7 @@ export const goAnn = () =>
           },
           {
             stack: {
-              id: 'Settings',
+              id: 'HomeSettings',
               options: {
                 bottomTab: {
                   text: 'Settings',
@@ -144,7 +144,7 @@ export const goAnn = () =>
               children: [
                 {
                   component: {
-                    name: 'Settings',
+                    name: 'HomeSettings',
                   },
                 },
               ],
@@ -154,3 +154,54 @@ export const goAnn = () =>
       }
     },
   })
+
+var courseTempleate = (id: string, text: string, icon: any, title: string) => {
+  return {
+    stack: {
+      id: id,
+      options: {
+        bottomTab: {
+          text: text,
+          icon: icon,
+          iconColor: '#AAAAAA',
+          selectedIconColor: '#000000',
+          textColor: '#AAAAAA',
+          selectedTextColor: '#000000',
+          //fontFamily: 'ArialRoundedMTBold',
+        },
+        topBar: {
+          title: {
+            text: title
+          },
+          leftButtons: [
+            {
+              id: 'back_btn',
+              icon: require('NCTUe4/src/img/ic_arrowback/ic_arrowback.png')
+            }
+          ],
+        }
+      },
+      children: [
+        {
+          component: {
+            name: id,
+          },
+        },
+      ],
+    }
+  }
+}
+
+
+export const pushCourse = (cname: string) =>
+  Navigation.showModal({
+    bottomTabs: {
+      children: [
+        courseTempleate('CourseAnn', 'Announcement', require('NCTUe4/src/img/ic_ann/ic_ann.png'), cname),
+        courseTempleate('CourseDoc', 'Document', require('NCTUe4/src/img/ic_course/ic_course.png'), cname),
+        courseTempleate('CourseTask', 'Task', require('NCTUe4/src/img/ic_timetable/ic_timetable.png'), cname),
+        courseTempleate('CourseScore', 'Score', require('NCTUe4/src/img/ic_score/ic_score.png'), cname),
+        courseTempleate('CourseMembers', 'Members', require('NCTUe4/src/img/ic_person/ic_person.png'), cname),
+      ],
+    }
+  });

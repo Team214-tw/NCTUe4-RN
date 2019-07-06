@@ -2,8 +2,8 @@ import React, { Component } from 'react'
 import { View, Text, Button, StyleSheet, ScrollView } from 'react-native'
 import * as KeyChain from 'react-native-keychain'
 import AsyncStorage from '@react-native-community/async-storage';
-import { goSignIn } from '../navigation';
-import { clean_datas } from '../client/NewE3ApiAdapter';
+import { goSignIn } from '../../navigation';
+import { clean_datas } from '../../client/NewE3ApiAdapter';
 
 interface Props { }
 interface States {

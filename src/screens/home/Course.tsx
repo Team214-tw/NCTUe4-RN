@@ -10,7 +10,8 @@ import {
 } from 'react-native'
 import AsyncStorage from '@react-native-community/async-storage';
 import { Button, ListItem, Badge, Divider } from 'react-native-elements'
-import NewE3ApiClient from '../client/NewE3ApiClient';
+import NewE3ApiClient from '../../client/NewE3ApiClient';
+import { pushCourse } from '../../navigation';
 
 interface Props { }
 interface States {
@@ -46,10 +47,6 @@ export default class Course extends Component<Props, States> {
     await this.updateState()
   }
 
-  goCourse = () => {
-    Alert.alert('Go course')
-  }
-
   _onRefresh = async () => {
     this.setState({ refreshing: true })
     let client = new NewE3ApiClient
@@ -76,7 +73,7 @@ export default class Course extends Component<Props, States> {
           </Text>
         </View>
       }
-      onPress={this.goCourse}
+      onPress={() => {pushCourse(item.cname)}}
       topDivider={true}
       containerStyle={styles.courseListItem}
     />
