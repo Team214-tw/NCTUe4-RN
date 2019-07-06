@@ -2,7 +2,7 @@ import React, {Component} from 'react'
 import { View, Text, Button, StyleSheet, ScrollView } from 'react-native'
 
 interface Props {}
-export default class Files extends Component<Props> {
+export default class HomeFilesScreen extends Component<Props> {
   render() {
     return (
       <View style={styles.container}>

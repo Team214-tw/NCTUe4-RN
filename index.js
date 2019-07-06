@@ -2,10 +2,12 @@
  * @format
  */
 
+import {AppRegistry} from 'react-native';
+import InitScreen from './src/screens/Init';
+import {name as appName} from './app.json';
+
 import {Alert} from 'react-native';
 import RNRestart from 'react-native-restart';
-import { Navigation } from "react-native-navigation";
-import { registerScreens } from './src/screens';
 import { setJSExceptionHandler, setNativeExceptionHandler } from 'react-native-exception-handler';
 
 const reporter = error => {
@@ -51,15 +53,4 @@ Please restart the app !`,
   )
 }, false);
 
-registerScreens();
-
-Navigation.events().registerAppLaunchedListener(() => {
-  Navigation.setRoot({
-    root: {
-      component: {
-        id: 'Init',
-        name: 'Init',
-      },
-    },
-  })
-});
+AppRegistry.registerComponent(appName, () => InitScreen);

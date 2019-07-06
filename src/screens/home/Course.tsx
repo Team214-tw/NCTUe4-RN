@@ -11,15 +11,16 @@ import {
 import AsyncStorage from '@react-native-community/async-storage';
 import { Button, ListItem, Badge, Divider } from 'react-native-elements'
 import NewE3ApiClient from '../../client/NewE3ApiClient';
-import { pushCourse } from '../../navigation';
 
-interface Props { }
+interface Props {
+  navigation: any,
+}
 interface States {
   refreshing: boolean,
   courseList: any
 }
 
-export default class Course extends Component<Props, States> {
+export default class HomeCourseScreen extends Component<Props, States> {
   
   constructor(props: Props) {
     super(props)
@@ -73,7 +74,7 @@ export default class Course extends Component<Props, States> {
           </Text>
         </View>
       }
-      onPress={() => {pushCourse(item.cname)}}
+      onPress={() => {this.props.navigation.push('Course', { title: item.cname })}}
       topDivider={true}
       containerStyle={styles.courseListItem}
     />

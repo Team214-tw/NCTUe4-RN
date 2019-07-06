@@ -3,7 +3,7 @@ import { View, Text, Button, StyleSheet, ScrollView } from 'react-native'
 
 interface Props {}
 
-export default class Ann extends Component<Props> {
+export default class HomeAnnScreen extends Component<Props> {
   async componentDidMount() {
 
   }

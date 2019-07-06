@@ -1,11 +1,15 @@
 import React, {Component} from 'react'
 import { View, Text, Button, StyleSheet, ScrollView } from 'react-native'
-import { pushCourse } from '../../navigation';
+import { getActiveChildNavigationOptions } from 'react-navigation';
 
 interface Props {
-  title: string,
+  navigation: any,
 }
-export default class Developing extends Component<Props> {
+export default class CourseAnnScreen extends Component<Props> {
+
+  async componentDidMount() {
+    // this.props.navigation.setParams({ title: this.props.navigation.getParam("title", '') })
+  }
 
   constructor(props: Props) {
     super(props)

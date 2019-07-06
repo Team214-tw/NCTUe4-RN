@@ -14,10 +14,11 @@ import {
 import * as Keychain from 'react-native-keychain'
 import Button from 'apsl-react-native-button'
 import Spinner from 'react-native-spinkit'
-import { goAnn } from '../navigation';
 import NewE3ApiClient from '../client/NewE3ApiClient'
 
-interface Props { }
+interface Props {
+  navigation: any,
+}
 interface States {
   showSpinner: boolean,
   failed: boolean,
@@ -26,7 +27,7 @@ interface States {
   password: string,
 }
 
-export default class SignIn extends Component<Props, States> {
+export default class SignInScreen extends Component<Props, States> {
 
   constructor(props: Props) {
     super(props)
@@ -51,7 +52,7 @@ export default class SignIn extends Component<Props, States> {
     const { username, password } = this.state
     await client.login(username, password)
       .then(() => {
-        goAnn()
+        this.props.navigation.navigate('Home');
       })
       .catch(err => {
         this.setState({ failed: true, failedMsg: err.message, showSpinner: false })
