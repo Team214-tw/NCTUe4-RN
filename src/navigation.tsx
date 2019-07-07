@@ -2,6 +2,7 @@ import { createBottomTabNavigator, createStackNavigator, NavigationActions, crea
 import { createMaterialBottomTabNavigator } from "react-navigation-material-bottom-tabs";
 import Icon from 'react-native-vector-icons/Ionicons';
 import React from "react";
+import I18n from "./utils/I18n"
 
 import HomeAnnScreen from "./screens/home/Ann";
 import HomeCourseScreen from "./screens/home/Course";
@@ -136,9 +137,15 @@ export const get_course_navigator = () => {
     {
       CourseAnnNews: {
         screen: CourseAnnNewsScreen,
+        navigationOptions: {
+          title: I18n.t("CourseAnnNews"),
+        }
       },
       CourseAnnGeneralStk: {
         screen: CourseAnnGeneralScreen,
+        navigationOptions: {
+          title: I18n.t("CourseAnnGeneral"),
+        }
       }
     }
   )
