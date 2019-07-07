@@ -52,7 +52,7 @@ export default class SignInScreen extends Component<Props, States> {
     const { username, password } = this.state
     await client.login(username, password)
       .then(() => {
-        this.props.navigation.navigate('Home');
+        this.props.navigation.navigate('HomeTab');
       })
       .catch(err => {
         this.setState({ failed: true, failedMsg: err.message, showSpinner: false })

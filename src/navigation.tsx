@@ -9,13 +9,13 @@ import HomeTimetableScreen from "./screens/home/Timetable";
 import HomeFilesScreen from "./screens/home/Files";
 import HomeSettingsScreen from "./screens/home/Settings";
 import SignInScreen from "./screens/SignIn";
-import CourseAnnScreen from "./screens/course/Ann";
 import CourseDocScreen from "./screens/course/Doc";
 import CourseTaskScreen from "./screens/course/Task";
 import CourseScoreScreen from "./screens/course/Score";
 import CourseMembersScreen from "./screens/course/Members";
-import { NavigationAction } from "react-navigation";
 import { createMaterialTopTabNavigator } from "react-navigation";
+import CourseAnnNewsScreen from "./screens/course/Ann/AnnNews";
+import CourseAnnGeneralScreen from "./screens/course/Ann/AnnGeneral";
 
 export const get_signin_navigator = () => {
   return createStackNavigator({
@@ -96,7 +96,7 @@ export const get_home_navigator = () => {
         screen: HomeFilesStk,
         navigationOptions: {
           title: 'Files',
-          tabBarIcon: (<Icon name="md-filing" size={24} color="#111" />),
+          tabBarIcon: (<Icon name="ios-download" size={24} color="#111" />),
         }
       },
       HomeSettings: {
@@ -132,14 +132,16 @@ export const get_home_navigator = () => {
 }
 
 export const get_course_navigator = () => {
-  const CourseAnnStk = createStackNavigator({
-    CourseAnn: {
-      screen: CourseAnnScreen,
-      navigationOptions: {
-        header: null,
+  const CourseAnnTab = createMaterialTopTabNavigator(
+    {
+      CourseAnnNews: {
+        screen: CourseAnnNewsScreen,
       },
+      CourseAnnGeneralStk: {
+        screen: CourseAnnGeneralScreen,
+      }
     }
-  })
+  )
   const CourseDocStk = createStackNavigator({
     CourseDoc: {
       screen: CourseDocScreen,
@@ -175,7 +177,7 @@ export const get_course_navigator = () => {
   const CourseTabNavigator = createMaterialBottomTabNavigator(
     {
       CourseAnnTab: {
-        screen: CourseAnnStk,
+        screen: CourseAnnTab,
         navigationOptions: {
           title: 'Ann',
           tabBarIcon: (<Icon name="md-megaphone" size={24} color="#111" />)

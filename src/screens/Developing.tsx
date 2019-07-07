@@ -1,12 +1,18 @@
 import React, {Component} from 'react'
 import { View, Text, Button, StyleSheet, ScrollView } from 'react-native'
 
-interface Props {}
-export default class Developing extends Component<Props> {
+interface Props {
+  navigation: any,
+}
+export default class DevelopingScreen extends Component<Props> {
   render() {
     return (
       <View style={styles.container}>
         <Text style={styles.welcome}>Developing</Text>
+        <Button
+          onPress={() => this.props.navigation.goBack()}
+          title="Dismiss"
+        />
       </View>
     );
   }

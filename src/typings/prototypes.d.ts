@@ -9,3 +9,7 @@ interface course_type {
 interface course_list {
     [semester: number]: Array<course_type>
 }
+interface ann {
+    title: string,
+    
+}

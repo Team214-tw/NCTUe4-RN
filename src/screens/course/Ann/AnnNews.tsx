@@ -1,13 +1,16 @@
 import React, {Component} from 'react'
 import { View, Text, Button, StyleSheet, ScrollView } from 'react-native'
 import { getActiveChildNavigationOptions } from 'react-navigation';
+import { createMaterialTopTabNavigator } from 'react-navigation';
 
 interface Props {
   navigation: any,
 }
-export default class CourseAnnScreen extends Component<Props> {
+
+export default class CourseAnnNewsScreen extends Component<Props> {
 
   async componentDidMount() {
+    console.log(this.props.navigation.dangerouslyGetParent().getParam('courseId'))
     // this.props.navigation.setParams({ title: this.props.navigation.getParam("title", '') })
   }
 
@@ -18,7 +21,7 @@ export default class CourseAnnScreen extends Component<Props> {
   render() {
     return (
       <View style={styles.container}>
-        <Text style={styles.welcome}>CourseAnn</Text>
+        <Text style={styles.welcome}>CourseAnnNews</Text>
       </View>
     );
   }

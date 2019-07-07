@@ -8,6 +8,7 @@ import NewE3ApiClient from '../client/NewE3ApiClient';
 
 import AnnScreen from './home/Ann';
 import SignInScreen from './SignIn';
+import DevelopingScreen from './Developing';
 
 interface Props {
   navigation: any
@@ -32,14 +33,17 @@ class InitScreen extends Component<Props> {
 const SignIn = get_signin_navigator();
 const AppStack = createStackNavigator(
   {
-    Home: {
+    HomeTab: {
       screen: get_home_navigator(),
     },
-    Course: {
+    CourseTab: {
       screen: get_course_navigator(),
       navigationOptions: ({ navigation }: any) => ({
         title: navigation.getParam('title', ''),
       }),
+    },
+    Developing: {
+      screen: DevelopingScreen,
     }
   },
   {

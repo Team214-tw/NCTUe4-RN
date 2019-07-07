@@ -52,6 +52,10 @@ export default class NewE3ApiClient {
           })
     }
 
+    /*
+     * Save course info (cname, ename, code, id, startdate, enddate)
+     * Save all course announcements
+     */
     private async saveCourseInfo() {
         let exist = await AsyncStorage.getItem('newE3UserId')
         if (!exist) { throw new Error("New E3 User ID not exists") }
@@ -91,7 +95,7 @@ export default class NewE3ApiClient {
                         enddate   : course.enddate,
                     }
                     parseList[courseSemester].push(parseCourse)
-                    this.saveCourseAnn(parseCourse)
+                    this.saveCourseAnn(parseCourse).catch(err => { throw err })
                 }
                 await AsyncStorage.setItem('courseInfo', JSON.stringify(parseList))
           })

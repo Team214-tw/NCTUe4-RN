@@ -74,7 +74,7 @@ export default class HomeCourseScreen extends Component<Props, States> {
           </Text>
         </View>
       }
-      onPress={() => {this.props.navigation.push('Course', { title: item.cname })}}
+      onPress={() => {this.props.navigation.push('CourseTab', { title: item.cname, courseId: item.id })}}
       topDivider={true}
       containerStyle={styles.courseListItem}
     />
