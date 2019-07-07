@@ -59,7 +59,7 @@ export default class NewE3ApiClient {
     private async saveCourseInfo() {
         let exist = await AsyncStorage.getItem('newE3UserId')
         if (!exist) { throw new Error("New E3 User ID not exists") }
-        let newE3UserId = JSON.parse(exist)
+        let newE3UserId: string = JSON.parse(exist)
 
         let formData = {
             "wsfunction": "core_enrol_get_users_courses",
@@ -68,7 +68,7 @@ export default class NewE3ApiClient {
 
         await this.post(formData)
           .then(async result => {
-                var parseList:course_list = {}
+                let parseList:course_list = {}
                 for (let course of result) {
                     let courseCName:string, courseEName:string, courseCode:number, courseSemester: number
                     let courseFullname = course.fullname.split(".")
@@ -95,7 +95,7 @@ export default class NewE3ApiClient {
                         enddate   : course.enddate,
                     }
                     parseList[courseSemester].push(parseCourse)
-                    this.saveCourseAnn(parseCourse).catch(err => { throw err })
+                    this.saveCourseAnn(parseCourse.id).catch(err => { throw err })
                 }
                 await AsyncStorage.setItem('courseInfo', JSON.stringify(parseList))
           })
@@ -104,15 +104,96 @@ export default class NewE3ApiClient {
           })
     }
 
-    private async saveCourseAnn(course: course_type) {
+    private async getCourseAnnDetail(form_id: number) {
+        let formData = {
+            "wsfunction": "mod_forum_get_forum_discussions_paginated",
+            "forumid": String(form_id),
+            "sortdirection": 'DESC',
+            "perpage": '100',
+            "sortby": "timemodified",
+        }
+
+        let token: string
+        await KeyChain.getInternetCredentials("NewE3")
+          .then(credentials => {
+                token = credentials.password
+          })
+          .catch(err => { throw err })
+        let ann_list: Array<ann_type> = []
+
+        return await this.post(formData)
+          .then(result => result['discussions'])
+          .then(result => {
+                result.forEach((ann: any) => {
+                    let parseAnn: ann_type = {
+                        title: ann.name,
+                        content: ann.message,
+                        isRead: false,
+                        timeCreated: new Date(ann.created * 1000),
+                        timeModified: new Date(ann.modified * 1000),
+                        attach: [],
+                        pinned: ann.pinned,
+                    }
+                    if ('attachments' in ann) {
+                        ann.attachments.forEach((file: any) => {
+                            parseAnn.attach.push({
+                                name: file.filename,
+                                type: file.filename.split('.').pop(),
+                                size: file.filesize,
+                                timemodified: new Date(file.timemodified * 1000),
+                                url: file.fileurl + "?token=" + token,
+                            })
+                        })
+                    }
+                    if ('messageinlinefiles' in ann) {
+                        ann.messageinlinefiles.forEach((file: any) => {
+                            parseAnn.content = parseAnn.content.replace(
+                                file.fileurl,
+                                file.fileurl + "?token=" + token
+                            )
+                        })
+                    }
+                    ann_list.push(parseAnn)
+                })
+                return ann_list
+          })
+          .catch(err => {
+                throw err
+          })
+    }
+
+    private async saveCourseAnn(course_id: number) {
         let formData = {
             "wsfunction": "mod_forum_get_forums_by_courses",
-            "courseids[0]": String(course.id),
+            "courseids[0]": String(course_id),
         }
 
         await this.post(formData)
-          .then(result => {
-                console.log(result)
+          .then(async result => {
+                let parseList: ann_list = {
+                    "news": {
+                        form_id: 0,
+                        ann: [],
+                    },
+                    "general": {
+                        form_id: 0,
+                        ann: [],
+                    },
+                }
+
+                parseList["news"].form_id = result[0].id
+                await this.getCourseAnnDetail(result[0].id)
+                  .then(result => { parseList["news"].ann = result })
+                  .catch(err => { throw err })
+
+                if (result.length > 1) { // if result has general field
+                    parseList["general"].form_id = (result.length > 1) ? 0 : result[1].id
+                    await this.getCourseAnnDetail(result[1].id)
+                      .then(result => { parseList["general"].ann = result })
+                      .catch(err => { throw err })
+                }
+                
+                await AsyncStorage.setItem('courseAnn' + course_id, JSON.stringify(parseList))
           })
           .catch(err => {
                 throw err

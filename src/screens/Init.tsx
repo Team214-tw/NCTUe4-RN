@@ -42,12 +42,12 @@ const AppStack = createStackNavigator(
         title: navigation.getParam('title', ''),
       }),
     },
-    Developing: {
+    Developing: { // a modal screen
       screen: DevelopingScreen,
     }
   },
   {
-
+    initialRouteName: 'HomeTab',
   }
 )
 
