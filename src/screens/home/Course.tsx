@@ -51,7 +51,7 @@ export default class HomeCourseScreen extends Component<Props, States> {
   _onRefresh = async () => {
     this.setState({ refreshing: true })
     let client = new NewE3ApiClient
-    client.updateCourseList().catch(err => { Alert.alert('Refresh failed', err.message) })
+    await client.updateCourseList().catch(err => { Alert.alert('Refresh failed', err.message) })
     await this.updateState()
     this.setState({ refreshing: false })
   }

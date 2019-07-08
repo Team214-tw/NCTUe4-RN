@@ -147,6 +147,9 @@ export const get_course_navigator = () => {
           title: I18n.t("CourseAnnGeneral"),
         }
       }
+    },
+    {
+      backBehavior: 'none',
     }
   )
   const CourseDocStk = createStackNavigator({

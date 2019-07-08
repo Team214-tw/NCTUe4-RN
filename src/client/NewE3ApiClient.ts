@@ -47,9 +47,7 @@ export default class NewE3ApiClient {
                 await AsyncStorage.setItem('studentEmail', JSON.stringify(result[0].email))
                 await AsyncStorage.setItem('studentName', JSON.stringify(result[0].fullname))
           })
-          .catch(err => {
-                throw err
-          })
+          .catch(err => { throw err })
     }
 
     /*
@@ -99,9 +97,7 @@ export default class NewE3ApiClient {
                 }
                 await AsyncStorage.setItem('courseInfo', JSON.stringify(parseList))
           })
-          .catch(err => {
-                throw err
-          })
+          .catch(err => { throw err })
     }
 
     private async getCourseAnnDetail(form_id: number) {
@@ -155,11 +151,14 @@ export default class NewE3ApiClient {
                     }
                     ann_list.push(parseAnn)
                 })
+                // sort by create time (DESC)
+                ann_list.sort((a, b) => {
+                    if (a.timeCreated < b.timeCreated) return 1;
+                    else return -1;
+                })
                 return ann_list
           })
-          .catch(err => {
-                throw err
-          })
+          .catch(err => { throw err })
     }
 
     private async saveCourseAnn(course_id: number) {
@@ -195,9 +194,7 @@ export default class NewE3ApiClient {
                 
                 await AsyncStorage.setItem('courseAnn' + course_id, JSON.stringify(parseList))
           })
-          .catch(err => {
-                throw err
-          })
+          .catch(err => { throw err })
     }
 
     /* -----------------------
@@ -241,6 +238,10 @@ export default class NewE3ApiClient {
 
     async updateCourseList() {
         return this.saveCourseInfo().catch(err => { throw err })
+    }
+
+    async updateCourseAnn(courseId: number) {
+        return this.saveCourseAnn(courseId).catch(err => { throw err })
     }
 }
 
