@@ -10,12 +10,14 @@ import {
 import { NavigationScreenProp } from 'react-navigation';
 import NewE3ApiClient from '../../../client/NewE3ApiClient';
 import AsyncStorage from '@react-native-community/async-storage';
+import * as Progress from 'react-native-progress';
 import { ListItem } from 'react-native-elements';
 
 interface Props {
   navigation: NavigationScreenProp<States, Props>,
 }
 interface States {
+  loading: boolean,
   refreshing: boolean,
   courseId: number,
   AnnList: Array<{ key: string, data: ann_type, }>,
@@ -27,6 +29,7 @@ export default class CourseAnnNewsScreen extends Component<Props, States> {
     super(props)
     const parent_nav = this.props.navigation.dangerouslyGetParent()
     this.state = {
+      loading: true,
       refreshing: false,
       courseId: parent_nav ? parent_nav.getParam('courseId') : 0,
       AnnList: [],
@@ -51,6 +54,7 @@ export default class CourseAnnNewsScreen extends Component<Props, States> {
 
   async componentDidMount() {
     await this.updateAnnList()
+    this.setState({ loading: false })
   }
 
   _onRefresh = async () => {
@@ -77,17 +81,40 @@ export default class CourseAnnNewsScreen extends Component<Props, States> {
     />
   )
 
+  _renderEmptyComponent = () => {
+    if (this.state.loading) {
+      return (
+        <View style={styles.centerContainer}>
+          <Progress.Circle
+            borderWidth={3}
+            size={55}
+            indeterminate={true}
+            thickness={1}
+          />
+        </View>
+      )
+    }
+    else {
+      return (
+        <View style={styles.centerContainer}>
+          <Text style={styles.emptyText}>Nothing here</Text>
+        </View>
+      )
+    }
+  }
+
   render() {
     return (
       <View style={styles.container}>
         <FlatList
-          style={styles.inner}
+          contentContainerStyle={{ flexGrow: 1 }}
           refreshControl={
             <RefreshControl
               refreshing={this.state.refreshing}
               onRefresh={this._onRefresh}
             />
           }
+          ListEmptyComponent={this._renderEmptyComponent}
           renderItem={this._renderItem}
           data={this.state.AnnList}
         />
@@ -114,5 +141,13 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     paddingTop: 14,
     paddingBottom: 14,
+  },
+  centerContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  emptyText: {
+    fontSize: 20,
   },
 });
