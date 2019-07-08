@@ -3,17 +3,19 @@ import {
   View,
   Text,
   StyleSheet,
-  ScrollView,
   SectionList,
   RefreshControl,
-  Alert
+  Alert,
+  ListRenderItemInfo,
+  SectionListData
 } from 'react-native'
 import AsyncStorage from '@react-native-community/async-storage';
-import { Button, ListItem, Badge, Divider } from 'react-native-elements'
+import { ListItem } from 'react-native-elements'
 import NewE3ApiClient from '../../client/NewE3ApiClient';
+import { NavigationScreenProp } from 'react-navigation';
 
 interface Props {
-  navigation: any,
+  navigation: NavigationScreenProp<States, Props>,
 }
 interface States {
   refreshing: boolean,
@@ -56,13 +58,13 @@ export default class HomeCourseScreen extends Component<Props, States> {
     this.setState({ refreshing: false })
   }
 
-  _renderSectionHeader: any = ({ section: { semester } }: any) => (
+  _renderSectionHeader = ({ section: { semester } }: { section: SectionListData<string> }) => (
     <View style={styles.sectionHeaders} >
       <Text style={styles.sectionHeadersTitle}>{semester}</Text>
     </View>
   )
 
-  _renderItem = ({ item, index }: any) => (
+  _renderItem = ({ item, index }: ListRenderItemInfo<course_type>) => (
     <ListItem
       title={
         <View>

@@ -1,13 +1,19 @@
 import React, { Component } from 'react'
-import { View, Text, Button, StyleSheet, ScrollView, RefreshControl } from 'react-native'
-import { getActiveChildNavigationOptions, SectionList, FlatList } from 'react-navigation';
-import { createMaterialTopTabNavigator } from 'react-navigation';
+import {
+  View,
+  Text,
+  StyleSheet,
+  RefreshControl,
+  ListRenderItemInfo,
+  FlatList,
+} from 'react-native'
+import { NavigationScreenProp } from 'react-navigation';
 import NewE3ApiClient from '../../../client/NewE3ApiClient';
 import AsyncStorage from '@react-native-community/async-storage';
 import { ListItem } from 'react-native-elements';
 
 interface Props {
-  navigation: any,
+  navigation: NavigationScreenProp<States, Props>,
 }
 interface States {
   refreshing: boolean,
@@ -19,14 +25,15 @@ export default class CourseAnnNewsScreen extends Component<Props, States> {
 
   constructor(props: Props) {
     super(props)
+    const parent_nav = this.props.navigation.dangerouslyGetParent()
     this.state = {
       refreshing: false,
-      courseId: this.props.navigation.dangerouslyGetParent().getParam('courseId'),
-      AnnList: []
+      courseId: parent_nav ? parent_nav.getParam('courseId') : 0,
+      AnnList: [],
     }
   }
 
-  async updateState() {
+  async updateAnnList() {
     let client = new NewE3ApiClient
     await client.updateCourseAnn(this.state.courseId)
 
@@ -43,16 +50,16 @@ export default class CourseAnnNewsScreen extends Component<Props, States> {
   }
 
   async componentDidMount() {
-    await this.updateState()
+    await this.updateAnnList()
   }
 
   _onRefresh = async () => {
     this.setState({ refreshing: true })
-    await this.updateState()
+    await this.updateAnnList()
     this.setState({ refreshing: false })
   }
 
-  _renderItem: any = ({item}: any) => (
+  _renderItem = ({item}: ListRenderItemInfo<{ key: string, data: ann_type }>) => (
     <ListItem
       title={
         <View>

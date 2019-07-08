@@ -11,13 +11,13 @@ import {
   Image,
   Platform,
 } from 'react-native'
-import * as Keychain from 'react-native-keychain'
 import Button from 'apsl-react-native-button'
 import Spinner from 'react-native-spinkit'
 import NewE3ApiClient from '../client/NewE3ApiClient'
+import { NavigationScreenProp } from 'react-navigation';
 
 interface Props {
-  navigation: any,
+  navigation: NavigationScreenProp<States, Props>,
 }
 interface States {
   showSpinner: boolean,

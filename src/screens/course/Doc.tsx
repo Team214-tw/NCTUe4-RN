@@ -1,7 +1,11 @@
-import React, {Component} from 'react'
-import { View, Text, Button, StyleSheet, ScrollView } from 'react-native'
+import React, { Component } from 'react'
+import {
+  View,
+  Text,
+  StyleSheet
+} from 'react-native'
 
-interface Props {}
+interface Props { }
 export default class CourseDocScreen extends Component<Props> {
   render() {
     return (

@@ -1,7 +1,7 @@
 import * as RNLocalize from "react-native-localize";
 import I18n, { translate } from "i18n-js";
 
-const translationGetters: any = {
+const translationGetters: { [lang: string]: Function } = {
     // lazy requires (metro bundler does not support symlinks)
     'en': () => require("./locales/en.json"),
     'zh-Hant-TW': () => require("./locales/zh_TW.json"),

@@ -1,9 +1,19 @@
-import React, {Component} from 'react'
-import { View, Text, Button, StyleSheet, ScrollView } from 'react-native'
+import React, { Component } from 'react'
+import {
+  View,
+  Text,
+  StyleSheet,
+  Button,
+} from 'react-native'
+import { NavigationScreenProp } from 'react-navigation';
 
 interface Props {
-  navigation: any,
+  navigation: NavigationScreenProp<States, Props>,
 }
+interface States {
+
+}
+
 export default class DevelopingScreen extends Component<Props> {
   render() {
     return (

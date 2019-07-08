@@ -1,5 +1,9 @@
-import React, {Component} from 'react'
-import { View, Text, Button, StyleSheet, ScrollView } from 'react-native'
+import React, { Component } from 'react'
+import {
+  View,
+  Text,
+  StyleSheet
+} from 'react-native'
 
 interface Props {}
 export default class HomeFilesScreen extends Component<Props> {

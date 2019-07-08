@@ -1,17 +1,31 @@
 import React, { Component } from 'react'
-import { View, Text, StyleSheet } from 'react-native'
-import { createStackNavigator, createAppContainer, createSwitchNavigator } from "react-navigation";
+import {
+  View,
+  Text,
+  StyleSheet
+} from 'react-native'
 import * as Keychain from 'react-native-keychain'
-import { get_home_navigator, get_signin_navigator, get_course_navigator } from '../navigation';
 import SplashScreen from 'react-native-splash-screen';
-import NewE3ApiClient from '../client/NewE3ApiClient';
-
-import AnnScreen from './home/Ann';
-import SignInScreen from './SignIn';
+// import react-navigation
+import {
+  createStackNavigator,
+  createAppContainer,
+  createSwitchNavigator,
+  NavigationScreenProp,
+  NavigationScreenConfigProps
+} from "react-navigation";
+import {
+  get_home_navigator,
+  get_signin_navigator,
+  get_course_navigator
+} from '../navigation';
 import DevelopingScreen from './Developing';
 
 interface Props {
-  navigation: any
+  navigation: NavigationScreenProp<States, Props>,
+}
+interface States {
+  
 }
 
 class InitScreen extends Component<Props> {
@@ -38,7 +52,7 @@ const AppStack = createStackNavigator(
     },
     CourseTab: {
       screen: get_course_navigator(),
-      navigationOptions: ({ navigation }: any) => ({
+      navigationOptions: ({ navigation }: NavigationScreenConfigProps) => ({
         title: navigation.getParam('title', ''),
       }),
     },

@@ -1,17 +1,23 @@
 import React, {Component} from 'react'
-import { View, Text, Button, StyleSheet, ScrollView } from 'react-native'
-import { getActiveChildNavigationOptions } from 'react-navigation';
-import { createMaterialTopTabNavigator } from 'react-navigation';
+import {
+  View,
+  Text,
+  Button,
+  StyleSheet
+} from 'react-native'
+import { NavigationScreenProp } from 'react-navigation';
 
 interface Props {
-  navigation: any,
+  navigation: NavigationScreenProp<States, Props>,
+}
+interface States {
+  
 }
 
 export default class CourseAnnGeneralScreen extends Component<Props> {
 
   async componentDidMount() {
-    console.log(this.props.navigation.dangerouslyGetParent().getParam('courseId'))
-    // this.props.navigation.setParams({ title: this.props.navigation.getParam("title", '') })
+    // console.log(this.props.navigation.dangerouslyGetParent().getParam('courseId'))
   }
 
   constructor(props: Props) {

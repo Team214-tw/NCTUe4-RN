@@ -1,12 +1,16 @@
 import React, { Component } from 'react'
-import { View, Text, Button, StyleSheet, ScrollView } from 'react-native'
-import * as KeyChain from 'react-native-keychain'
+import {
+  View,
+  Text,
+  Button,
+  StyleSheet
+} from 'react-native'
 import AsyncStorage from '@react-native-community/async-storage';
 import { clean_datas } from '../../client/NewE3ApiAdapter';
-import { get_signin_navigator } from '../../navigation';
+import { NavigationScreenProp } from 'react-navigation';
 
 interface Props {
-  navigation: any,
+  navigation: NavigationScreenProp<States, Props>,
 }
 interface States {
   fullname: string,
