@@ -46,6 +46,7 @@ export default class CourseAnnGeneralScreen extends Component<Props, States> {
 
     var renderList: Array<{ key: string, data: ann_type }> = []
     annList['general'].ann.forEach((ann: ann_type, i: number) => {
+      ann.content = ann.content.replace(/<[^>]*>/g, '')
       renderList.push({key: String(i), data: ann})
     })
 
@@ -66,14 +67,14 @@ export default class CourseAnnGeneralScreen extends Component<Props, States> {
   _renderItem = ({item}: ListRenderItemInfo<{ key: string, data: ann_type }>) => (
     <ListItem
       title={
-        <View>
-          <Text numberOfLines={1} style={styles.title}>
-            {item.data.title}
-          </Text>
-          <Text numberOfLines={1} style={styles.content}>
-            {item.data.content}
-          </Text>
-        </View>
+        <Text numberOfLines={1} style={styles.title}>
+          {item.data.title}
+        </Text>
+      }
+      subtitle={
+        <Text numberOfLines={1} style={styles.content}>
+          {item.data.content}
+        </Text>
       }
       onPress={() => {this.props.navigation.push('Developing')}}
       topDivider={true}
