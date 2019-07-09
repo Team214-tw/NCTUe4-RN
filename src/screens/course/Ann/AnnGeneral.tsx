@@ -4,7 +4,7 @@ import AsyncStorage from '@react-native-community/async-storage';
 import CourseAnnScreen from './Ann';
 
 interface Props {
-  navigation: NavigationScreenProp<States, {}>,
+  navigation: NavigationScreenProp<States, { courseName: string }>,
 }
 interface States {
   loading: boolean,

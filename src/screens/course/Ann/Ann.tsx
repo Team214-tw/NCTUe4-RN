@@ -6,19 +6,15 @@ import {
   RefreshControl,
   ListRenderItemInfo,
   FlatList,
-  StatusBar,
+  ActivityIndicator,
+  Platform,
 } from 'react-native'
 import { NavigationScreenProp } from 'react-navigation';
 import * as Progress from 'react-native-progress';
 import { ListItem } from 'react-native-elements';
-import ScrollableNavigationBar, {
-  StatusBarComponent,
-  NavigationBarIcon,
-  BackButton
-} from 'react-native-scrollable-navigation-bar';
 
 interface Props {
-  navigation: NavigationScreenProp<States, {}>,
+  navigation: NavigationScreenProp<States, { courseName: string }>,
 }
 interface States {
   loading: boolean,
@@ -53,7 +49,7 @@ export default class CourseAnnScreen extends Component<Props, States> {
     this.setState({ refreshing: false })
   }
 
-  _renderItem = ({item}: ListRenderItemInfo<{ key: string, data: ann_type }>) => (
+  _renderItem = ({ item }: ListRenderItemInfo<{ key: string, data: ann_type }>) => (
     <ListItem
       title={
         <Text numberOfLines={1} style={styles.title}>
@@ -61,11 +57,11 @@ export default class CourseAnnScreen extends Component<Props, States> {
         </Text>
       }
       subtitle={
-        <Text numberOfLines={1} style={styles.content}>
+        <Text numberOfLines={2} style={styles.content}>
           {item.data.content.replace(/<[^>]*>/g, '')}
         </Text>
       }
-      onPress={() => {this.props.navigation.push('AnnDetail', { annDetail: JSON.stringify(item.data), courseId: this.state.courseId })}}
+      onPress={() => { this.props.navigation.push('AnnDetail', { annDetail: JSON.stringify(item.data), courseName: this.props.navigation.getParam('courseName', '') }) }}
       topDivider={true}
       containerStyle={styles.annListItem}
     />
@@ -75,12 +71,7 @@ export default class CourseAnnScreen extends Component<Props, States> {
     if (this.state.loading) {
       return (
         <View style={styles.centerContainer}>
-          <Progress.Circle
-            borderWidth={3}
-            size={55}
-            indeterminate={true}
-            thickness={1}
-          />
+          <ActivityIndicator size={Platform.OS === 'ios' ? 'large' : 60} color='#555' />
         </View>
       )
     }
@@ -122,10 +113,12 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 16,
+    fontWeight: 'bold',
     marginBottom: 2,
   },
   content: {
     fontSize: 14,
+    lineHeight: 20,
   },
   annListItem: {
     paddingHorizontal: 16,

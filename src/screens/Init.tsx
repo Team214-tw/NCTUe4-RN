@@ -55,7 +55,7 @@ const AppStack = createStackNavigator(
     CourseTab: {
       screen: get_course_navigator(),
       navigationOptions: ({ navigation }: NavigationScreenConfigProps) => ({
-        title: navigation.getParam('title', ''),
+        title: navigation.getParam('courseName', ''),
       }),
     },
     AnnDetail: {
@@ -70,9 +70,6 @@ const AppStack = createStackNavigator(
   },
   {
     initialRouteName: 'HomeTab',
-    defaultNavigationOptions: {
-      headerStyle: { marginTop: StatusBar.currentHeight }, // because StatusBar.setTranslucent(true) in 'react-native-scrollable-navigation-bar'
-    }
   }
 )
 

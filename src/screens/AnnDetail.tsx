@@ -9,19 +9,13 @@ import {
   Linking,
 } from 'react-native'
 import { NavigationScreenProp, ScrollView } from 'react-navigation';
-import ScrollableNavigationBar, {
-  StatusBarComponent,
-  NavigationBarIcon,
-  BackButton
-} from 'react-native-scrollable-navigation-bar';
 import AutoHeightWebView from 'react-native-autoheight-webview'
 
 interface Props {
-  navigation: NavigationScreenProp<States, { annDetail: string, courseId: number }>,
+  navigation: NavigationScreenProp<States, { annDetail: string, courseName: string }>,
   collapsible: any,
 }
 interface States {
-  ann: ann_type,
 }
 
 export default class AnnDetailScreen extends Component<Props, States> {
@@ -36,37 +30,18 @@ export default class AnnDetailScreen extends Component<Props, States> {
   render() {
     let annStr = this.props.navigation.getParam('annDetail', '')
     let ann = JSON.parse(annStr)
-    let courseId = this.props.navigation.getParam('courseId', 0)
+    let courseName = this.props.navigation.getParam('courseName', '')
     
     return (
-      <ScrollableNavigationBar
-        transitionPoint={150}
-        StatusBar={() => (
-          <StatusBarComponent
-            barStyle="dark-content"
-            backgroundColor="#f5f5f5"
-          />
-        )}
-        title={courseId}
-        backgroundColor="#f5f5f5"
-        borderColor="lightgrey"
-        BackButton={() => (
-          <BackButton
-            onPress={() => this.props.navigation.goBack()}
-          />
-        )}
-        collapsible
-      >
-        <View style={styles.annFrontMatter}>
-          <Text style={styles.annTitle}>{ann.title}</Text>
-        </View>
+      <View style={styles.container}>
+        <Text style={styles.annTitle}>{ann.title}</Text>
+        <Text style={styles.annTitle}>{courseName}</Text>
         <AutoHeightWebView
           source={{ html: ann.content }}
           zoomable={false}
           scrollEnable={false}
         />
-
-      </ScrollableNavigationBar>
+      </View>
     );
   }
 }
@@ -74,33 +49,10 @@ export default class AnnDetailScreen extends Component<Props, States> {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-  },
-  placeholder: {
-    height: 300,
-    justifyContent: 'flex-end',
-  },
-  welcome: {
-    fontSize: 20,
-    textAlign: 'center',
-    margin: 10,
-  },
-  instructions: {
-    textAlign: 'center',
-    color: '#333333',
-    marginBottom: 5,
-  },
-  annFrontMatter: {
-    flex: 1,
-    padding: 5,
+    justifyContent: 'flex-start',
   },
   annTitle: {
     fontSize: 30,
     lineHeight: 36,
   },
-  annContent: {
-    flex: 1,
-    width: '100%',
-    height: '100%',
-    backgroundColor: 'blue'
-  }
 });

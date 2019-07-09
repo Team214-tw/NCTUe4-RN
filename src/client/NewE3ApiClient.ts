@@ -122,27 +122,27 @@ export default class NewE3ApiClient {
           .then(result => {
                 result.forEach((ann: any) => {
                     let parseAnn: ann_type = {
-                        title:          ann.name,
-                        content:        ann.message,
-                        isRead:         false,
-                        timeCreated:    new Date(ann.created * 1000),
-                        timeModified:   new Date(ann.modified * 1000),
-                        attach:         [],
-                        pinned:         ann.pinned,
+                        title           : ann.name,
+                        content         : ann.message,
+                        isRead          : false,
+                        timeCreated     : new Date(ann.created * 1000),
+                        timeModified    : new Date(ann.modified * 1000),
+                        attach          : [],
+                        pinned          : ann.pinned,
                     }
                     if ('attachments' in ann) {
                         ann.attachments.forEach((file: any) => {
                             parseAnn.attach.push({
-                                name: file.filename,
-                                type: file.filename.split('.').pop(),
-                                size: file.filesize,
-                                timemodified: new Date(file.timemodified * 1000),
-                                url: file.fileurl + "?token=" + token,
+                                name            : file.filename,
+                                type            : file.filename.split('.').pop(),
+                                size            : file.filesize,
+                                timemodified    : new Date(file.timemodified * 1000),
+                                url             : file.fileurl + "?token=" + token,
                             })
                         })
                     }
                     if ('messageinlinefiles' in ann) {
-                        ann.messageinlinefiles.forEach((file: any) => {
+                        ann.messageinlinefiles.forEach((file: any) => { // image link need token
                             parseAnn.content = parseAnn.content.replace(
                                 file.fileurl,
                                 file.fileurl + "?token=" + token

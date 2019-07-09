@@ -4,7 +4,6 @@ import {
   Text,
   StyleSheet
 } from 'react-native'
-import ScrollableNavigationBar, { StatusBarComponent } from 'react-native-scrollable-navigation-bar';
 
 interface Props {}
 
@@ -15,36 +14,9 @@ export default class HomeAnnScreen extends Component<Props> {
   
   render() {
     return (
-      <ScrollableNavigationBar
-        transitionPoint={150}
-        StatusBar={() => (
-          <StatusBarComponent
-            barStyle="dark-content"
-            backgroundColor="#f5f5f5"
-          />
-        )}
-        title="Announcement"
-        backgroundColor="#f5f5f5"
-        borderColor="lightgrey"
-        collapsible
-      >
+      <View style={styles.container}>
         <Text style={styles.welcome}>Ann</Text>
-        <Text style={styles.welcome}>Ann</Text>
-        <Text style={styles.welcome}>Ann</Text>
-        <Text style={styles.welcome}>Ann</Text>
-        <Text style={styles.welcome}>Ann</Text>
-        <Text style={styles.welcome}>Ann</Text>
-        <Text style={styles.welcome}>Ann</Text>
-        <Text style={styles.welcome}>Ann</Text>
-        <Text style={styles.welcome}>Ann</Text>
-        <Text style={styles.welcome}>Ann</Text>
-        <Text style={styles.welcome}>Ann</Text>
-        <Text style={styles.welcome}>Ann</Text>
-        <Text style={styles.welcome}>Ann</Text>
-        <Text style={styles.welcome}>Ann</Text>
-        <Text style={styles.welcome}>Ann</Text>
-        <Text style={styles.welcome}>Ann</Text>
-      </ScrollableNavigationBar>
+      </View>
     );
   }
 }

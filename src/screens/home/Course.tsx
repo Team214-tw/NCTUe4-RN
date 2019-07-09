@@ -14,7 +14,6 @@ import AsyncStorage from '@react-native-community/async-storage';
 import { ListItem } from 'react-native-elements'
 import NewE3ApiClient from '../../client/NewE3ApiClient';
 import { NavigationScreenProp } from 'react-navigation';
-import ScrollableNavigationBar, { StatusBarComponent } from 'react-native-scrollable-navigation-bar';
 
 interface Props {
   navigation: NavigationScreenProp<States, {}>,
@@ -78,7 +77,7 @@ export default class HomeCourseScreen extends Component<Props, States> {
           </Text>
         </View>
       }
-      onPress={() => {this.props.navigation.push('CourseTab', { title: item.cname, courseId: item.id })}}
+      onPress={() => {this.props.navigation.push('CourseTab', { courseName: item.cname, courseId: item.id })}}
       topDivider={true}
       containerStyle={styles.courseListItem}
     />
@@ -109,7 +108,6 @@ export default class HomeCourseScreen extends Component<Props, States> {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    marginTop: StatusBar.currentHeight,
   },
   inner: {
     flex: 1,
