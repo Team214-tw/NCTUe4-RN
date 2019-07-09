@@ -3,6 +3,7 @@ package com.nctue4;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
+import com.reactnativecommunity.webview.RNCWebViewPackage;
 import com.reactcommunity.rnlocalize.RNLocalizePackage;
 import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
@@ -36,6 +37,7 @@ public class MainApplication extends Application implements ReactApplication {
         // No need to add RnnPackage and MainReactPackage
         return Arrays.<ReactPackage>asList(
             new MainReactPackage(),
+            new RNCWebViewPackage(),
             new RNLocalizePackage(),
             new KeychainPackage(),
             new RNSpinkitPackage(),

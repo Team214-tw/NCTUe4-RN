@@ -2,7 +2,8 @@ import React, { Component } from 'react'
 import {
   View,
   Text,
-  StyleSheet
+  StyleSheet,
+  StatusBar
 } from 'react-native'
 import * as Keychain from 'react-native-keychain'
 import SplashScreen from 'react-native-splash-screen';
@@ -20,9 +21,10 @@ import {
   get_course_navigator
 } from '../navigation';
 import DevelopingScreen from './Developing';
+import AnnDetailScreen from './AnnDetail';
 
 interface Props {
-  navigation: NavigationScreenProp<States, Props>,
+  navigation: NavigationScreenProp<States, {}>,
 }
 interface States {
   
@@ -56,12 +58,21 @@ const AppStack = createStackNavigator(
         title: navigation.getParam('title', ''),
       }),
     },
+    AnnDetail: {
+      screen: AnnDetailScreen,
+      navigationOptions: {
+        header: null,
+      }
+    },
     Developing: { // a modal screen
       screen: DevelopingScreen,
-    }
+    },
   },
   {
     initialRouteName: 'HomeTab',
+    defaultNavigationOptions: {
+      headerStyle: { marginTop: StatusBar.currentHeight }, // because StatusBar.setTranslucent(true) in 'react-native-scrollable-navigation-bar'
+    }
   }
 )
 

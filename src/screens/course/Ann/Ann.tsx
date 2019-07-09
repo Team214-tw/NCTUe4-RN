@@ -6,13 +6,19 @@ import {
   RefreshControl,
   ListRenderItemInfo,
   FlatList,
+  StatusBar,
 } from 'react-native'
 import { NavigationScreenProp } from 'react-navigation';
 import * as Progress from 'react-native-progress';
 import { ListItem } from 'react-native-elements';
+import ScrollableNavigationBar, {
+  StatusBarComponent,
+  NavigationBarIcon,
+  BackButton
+} from 'react-native-scrollable-navigation-bar';
 
 interface Props {
-  navigation: NavigationScreenProp<States, Props>,
+  navigation: NavigationScreenProp<States, {}>,
 }
 interface States {
   loading: boolean,
@@ -56,10 +62,10 @@ export default class CourseAnnScreen extends Component<Props, States> {
       }
       subtitle={
         <Text numberOfLines={1} style={styles.content}>
-          {item.data.content}
+          {item.data.content.replace(/<[^>]*>/g, '')}
         </Text>
       }
-      onPress={() => {this.props.navigation.push('Developing')}}
+      onPress={() => {this.props.navigation.push('AnnDetail', { annDetail: JSON.stringify(item.data), courseId: this.state.courseId })}}
       topDivider={true}
       containerStyle={styles.annListItem}
     />

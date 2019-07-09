@@ -17,7 +17,7 @@ import NewE3ApiClient from '../client/NewE3ApiClient'
 import { NavigationScreenProp } from 'react-navigation';
 
 interface Props {
-  navigation: NavigationScreenProp<States, Props>,
+  navigation: NavigationScreenProp<States, {}>,
 }
 interface States {
   showSpinner: boolean,

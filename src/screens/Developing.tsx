@@ -8,7 +8,7 @@ import {
 import { NavigationScreenProp } from 'react-navigation';
 
 interface Props {
-  navigation: NavigationScreenProp<States, Props>,
+  navigation: NavigationScreenProp<States, {}>,
 }
 interface States {
 

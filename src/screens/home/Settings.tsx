@@ -10,7 +10,7 @@ import { clean_datas } from '../../client/NewE3ApiAdapter';
 import { NavigationScreenProp } from 'react-navigation';
 
 interface Props {
-  navigation: NavigationScreenProp<States, Props>,
+  navigation: NavigationScreenProp<States, {}>,
 }
 interface States {
   fullname: string,

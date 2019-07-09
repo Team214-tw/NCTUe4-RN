@@ -122,13 +122,13 @@ export default class NewE3ApiClient {
           .then(result => {
                 result.forEach((ann: any) => {
                     let parseAnn: ann_type = {
-                        title: ann.name,
-                        content: ann.message,
-                        isRead: false,
-                        timeCreated: new Date(ann.created * 1000),
-                        timeModified: new Date(ann.modified * 1000),
-                        attach: [],
-                        pinned: ann.pinned,
+                        title:          ann.name,
+                        content:        ann.message,
+                        isRead:         false,
+                        timeCreated:    new Date(ann.created * 1000),
+                        timeModified:   new Date(ann.modified * 1000),
+                        attach:         [],
+                        pinned:         ann.pinned,
                     }
                     if ('attachments' in ann) {
                         ann.attachments.forEach((file: any) => {

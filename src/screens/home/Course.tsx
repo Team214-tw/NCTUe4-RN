@@ -7,15 +7,17 @@ import {
   RefreshControl,
   Alert,
   ListRenderItemInfo,
-  SectionListData
+  SectionListData,
+  StatusBar
 } from 'react-native'
 import AsyncStorage from '@react-native-community/async-storage';
 import { ListItem } from 'react-native-elements'
 import NewE3ApiClient from '../../client/NewE3ApiClient';
 import { NavigationScreenProp } from 'react-navigation';
+import ScrollableNavigationBar, { StatusBarComponent } from 'react-native-scrollable-navigation-bar';
 
 interface Props {
-  navigation: NavigationScreenProp<States, Props>,
+  navigation: NavigationScreenProp<States, {}>,
 }
 interface States {
   refreshing: boolean,
@@ -46,8 +48,8 @@ export default class HomeCourseScreen extends Component<Props, States> {
     this.setState({ courseList: renderList })
   }
 
-  async componentDidMount() {
-    await this.updateState()
+  componentDidMount() {
+    this.updateState()
   }
 
   _onRefresh = async () => {
@@ -107,6 +109,7 @@ export default class HomeCourseScreen extends Component<Props, States> {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    marginTop: StatusBar.currentHeight,
   },
   inner: {
     flex: 1,

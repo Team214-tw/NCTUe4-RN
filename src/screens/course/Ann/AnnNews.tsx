@@ -4,7 +4,7 @@ import AsyncStorage from '@react-native-community/async-storage';
 import CourseAnnScreen from './Ann';
 
 interface Props {
-  navigation: NavigationScreenProp<States, Props>,
+  navigation: NavigationScreenProp<States, {}>,
 }
 interface States {
   loading: boolean,
@@ -30,7 +30,6 @@ export default class CourseAnnNewsScreen extends CourseAnnScreen {
 
     var renderList: Array<{ key: string, data: ann_type }> = []
     annList['news'].ann.forEach((ann: ann_type, i: number) => {
-      ann.content = ann.content.replace(/<[^>]*>/g, '')
       renderList.push({key: String(i), data: ann})
     })
 

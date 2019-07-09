@@ -150,6 +150,7 @@ export const get_course_navigator = () => {
     },
     {
       backBehavior: 'none',
+      animationEnabled: true,
     }
   )
   const CourseDocStk = createStackNavigator({
